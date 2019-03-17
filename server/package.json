@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "npm run lint && nodemon",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "douglasmuraoka",
@@ -19,6 +20,11 @@
     "nodemon": "^1.18.10"
   },
   "devDependencies": {
-    "eslint": "^5.15.2"
+    "apollo-server-testing": "^2.4.8",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^5.15.2",
+    "graphql-tag": "^2.10.1",
+    "mocha": "^6.0.2"
   }
 }
