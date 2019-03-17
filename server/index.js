@@ -31,6 +31,7 @@ const typeDefs = gql`
 
   type Mutation {
     createStudent(firstName: String!, lastName: String!, birthDate: String!, hobbies: [String!], photo: String!): Student
+    updateStudent(firstName: String, lastName: String, birthDate: String, hobbies: [String!], photo: String): Student
   }
 `;
 
@@ -55,6 +56,34 @@ const resolvers = {
       };
       students.push(newStudent);
       return newStudent;
+    },
+    updateStudent: (parent, args) => {
+      const { firstName, lastName, birthDate, hobbies, photo } = args;
+      const newStudentData = {
+        firstName,
+        lastName,
+        birthDate,
+        hobbies,
+        photo
+      };
+
+      // At the moment we still don't have an ID for the student, so we'll consider the firstName + lastName
+      // as its ID.
+      const studentToUpdate = students.find(({ firstName, lastName }) => firstName === newStudentData.firstName && lastName === newStudentData.lastName);
+      if (!studentToUpdate) {
+        throw new Error(`Student not found to update`);
+      }
+
+      // Iterates over all attributes received from the mutation to update the student
+      Object.entries(newStudentData)
+        // Before updating, filters all attributes that won't be updated (i.e. its value is undefined).
+        .filter(([key, value]) => value !== undefined)
+
+        // Then updates field by field.
+        .forEach(([key, value]) => {
+          studentToUpdate[key] = value;
+        });
+      return studentToUpdate;
     }
   }
 };
