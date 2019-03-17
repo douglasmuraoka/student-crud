@@ -72,13 +72,13 @@ const resolvers = {
       // as its ID.
       const studentToUpdate = students.find(({ firstName, lastName }) => firstName === newStudentData.firstName && lastName === newStudentData.lastName);
       if (!studentToUpdate) {
-        throw new Error(`Student not found to update`);
+        throw new Error('Student not found to update');
       }
 
       // Iterates over all attributes received from the mutation to update the student
       Object.entries(newStudentData)
         // Before updating, filters all attributes that won't be updated (i.e. its value is undefined).
-        .filter(([key, value]) => value !== undefined)
+        .filter(([, value]) => value !== undefined)
 
         // Then updates field by field.
         .forEach(([key, value]) => {
