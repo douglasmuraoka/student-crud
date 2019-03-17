@@ -40,6 +40,18 @@ const UPDATE_STUDENT = gql`
   }
 `;
 
+const DELETE_STUDENT = gql`
+  mutation DeleteStudent($firstName: String!, $lastName: String!) {
+    deleteStudent (firstName: $firstName, lastName: $lastName) {
+      firstName
+      lastName
+      birthDate
+      hobbies
+      photo
+    }
+  }
+`;
+
 describe('Student ApolloServer', () => {
   let query, mutate;
 
@@ -128,6 +140,48 @@ describe('Student ApolloServer', () => {
         let res = await mutate({ mutation: UPDATE_STUDENT, variables: newStudentData });
         expect(res.errors).to.have.lengthOf(1);
         expect(res.errors[0].message).to.equal('Student not found to update');
+      });
+    });
+  });
+
+  describe('delete', () => {
+    describe('delete an existing student', () => {
+      it('should delete a student', async () => {
+        const deletedStudentData = {
+          firstName: 'Robo',
+          lastName: 'Cop'
+        };
+        let res = await mutate({ mutation: DELETE_STUDENT, variables: deletedStudentData });
+
+        const expectedDeletedStudentData = {
+          firstName: 'Robo',
+          lastName: 'Cop',
+          birthDate: '06/06/2066',
+          hobbies: ['fishing', 'hunting'],
+          photo: 'https://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/t/5c6f1cd7e4966bef3114988e/1550785755380'
+        };
+        expect(res.data.deleteStudent).to.deep.equal(expectedDeletedStudentData);
+
+        res = await query({ query: GET_STUDENTS });
+        const { students } = res.data;
+        expect(students).to.have.lengthOf(1);
+
+        // Checks if the student was really removed
+        expect(students.some(({ firstName, lastName }) =>
+          firstName === deletedStudentData.firstName && lastName === deletedStudentData.lastName)
+        ).to.be.false;
+      });
+    });
+
+    describe('delete failures', () => {
+      it('should return an error if the student was not found', async () => {
+        const deletedStudentData = {
+          firstName: 'foo',
+          lastName: 'bar'
+        };
+        let res = await mutate({ mutation: DELETE_STUDENT, variables: deletedStudentData });
+        expect(res.errors).to.have.lengthOf(1);
+        expect(res.errors[0].message).to.equal('Student not found to delete');
       });
     });
   });

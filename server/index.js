@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server');
 
 // Mocked data until we have configured the database
-const students = [
+let students = [
   {
     firstName: 'Douglas',
     lastName: 'Muraoka',
@@ -32,6 +32,7 @@ const typeDefs = gql`
   type Mutation {
     createStudent(firstName: String!, lastName: String!, birthDate: String!, hobbies: [String!], photo: String!): Student
     updateStudent(firstName: String, lastName: String, birthDate: String, hobbies: [String!], photo: String): Student
+    deleteStudent(firstName: String!, lastName: String!): Student
   }
 `;
 
@@ -84,6 +85,25 @@ const resolvers = {
           studentToUpdate[key] = value;
         });
       return studentToUpdate;
+    },
+    deleteStudent: (parent, args) => {
+      const { firstName, lastName } = args;
+      let studentRemoved;
+
+      // Removes the student by its firstName and lastName (since we still don't have an ID)
+      students = students.filter(student => {
+        if (student.firstName === firstName && student.lastName === lastName) {
+          studentRemoved = student;
+          return false;
+        }
+        return true;
+      });
+
+      // Throws an error if the student was not found
+      if (!studentRemoved) {
+        throw new Error('Student not found to delete');
+      }
+      return studentRemoved;
     }
   }
 };
