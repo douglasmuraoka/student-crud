@@ -28,6 +28,10 @@ const typeDefs = gql`
   type Query {
     students: [Student]
   }
+
+  type Mutation {
+    createStudent(firstName: String!, lastName: String!, birthDate: String!, hobbies: [String!], photo: String!): Student
+  }
 `;
 
 /**
@@ -39,6 +43,20 @@ const resolvers = {
   Query: {
     students: () => students,
   },
+  Mutation: {
+    createStudent: (parent, args) => {
+      const { firstName, lastName, birthDate, hobbies, photo } = args;
+      const newStudent = {
+        firstName,
+        lastName,
+        birthDate,
+        hobbies,
+        photo
+      };
+      students.push(newStudent);
+      return newStudent;
+    }
+  }
 };
 
 /**
