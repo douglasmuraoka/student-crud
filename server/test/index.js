@@ -117,7 +117,9 @@ describe('Student ApolloServer', () => {
         expect(res.data.students).to.have.lengthOf(2);
         expect(res.data.students[1]).to.deep.equal(newStudentData);
       });
+    });
 
+    describe('update failures', () => {
       it('should return an error if the student was not found', async () => {
         const newStudentData = {
           firstName: 'foo',
