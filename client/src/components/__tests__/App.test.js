@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter, MemoryRouter, Route, Switch } from 'react-router-dom';
+import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import App from '../App';
 import Root from '../Root';
 import StudentList from '../StudentList';
-import StudentForm from '../StudentList';
+import StudentForm from '../StudentForm';
 import { mount } from 'enzyme';
 
 /**
@@ -26,7 +26,6 @@ describe('App', () => {
   it('renders the StudentList on path "/"', () => {
     wrapped = getRoutedApp('/');
     expect(wrapped.find(Root)).toHaveLength(1);
-    expect(wrapped.find(BrowserRouter)).toHaveLength(1);
     expect(wrapped.find(Switch)).toHaveLength(1);
     expect(wrapped.find(Route)).toHaveLength(1);
     expect(wrapped.find(StudentList)).toHaveLength(1);
@@ -35,9 +34,8 @@ describe('App', () => {
   it('renders the StudentForm on path "/new"', () => {
     wrapped = getRoutedApp('/new');
     expect(wrapped.find(Root)).toHaveLength(1);
-    expect(wrapped.find(BrowserRouter)).toHaveLength(1);
     expect(wrapped.find(Switch)).toHaveLength(1);
-    expect(wrapped.find(Route)).toHaveLength(1);
+    expect(wrapped.find(Route)).toHaveLength(2);
     expect(wrapped.find(StudentForm)).toHaveLength(1);
   });
 });
