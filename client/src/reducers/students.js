@@ -8,12 +8,12 @@
  *   }
  */
 
-import { FETCH_STUDENTS } from '../actions/ActionType';
+import { CREATE_STUDENT_DONE, FETCH_STUDENTS } from '../actions/ActionType';
 
 export default (state = {}, { payload, type }) => {
+  const { data, error } = payload || {};
   switch (type) {
     case FETCH_STUDENTS:
-      const { data, error } = payload;
       if (data) {
         return {
           ...state,
@@ -25,6 +25,14 @@ export default (state = {}, { payload, type }) => {
         ...state,
         error
       }
+    case CREATE_STUDENT_DONE:
+      if (data) {
+        return {
+          data: [...state.data, data],
+          error
+        };
+      }
+      return state;
     default:
       return state;
   }

@@ -40,3 +40,37 @@ export const fetchStudents = async () => {
   }
   return { data: data.students };
 };
+
+/**
+ * Persists a brand new student and returns its data when finished with success.
+ *
+ * @param {String} student.firstName
+ * @param {String} student.lastName
+ * @param {String} student.birthDate
+ * @param {String} student.hobbies
+ * @param {String} student.photo
+ *
+ * @returns {Object} An object containing either "data" or "error" attribute.
+ * If defined, "data" should be the persisted student data.
+ * If defined, "error" should be an array of GraphQLError.
+ */
+export const createStudent = async student => {
+  const { data, errors } = await client.mutate({
+    mutation: gql`
+    mutation CreateStudent($firstName: String!, $lastName: String!, $birthDate: String!, $hobbies: [String!], $photo: String!) {
+      createStudent (firstName: $firstName, lastName: $lastName, birthDate: $birthDate, hobbies: $hobbies, photo: $photo) {
+        firstName
+        lastName
+        birthDate
+        hobbies
+        photo
+      }
+    }
+  `,
+    variables: student
+  });
+  if (errors) {
+    return { error: errors };
+  }
+  return { data: data.createStudent };
+};

@@ -5,15 +5,19 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class StudentList extends Component {
   render() {
     return (
-      <ul>
-        {this.props.students && this.props.students.map(({ firstName, lastName }) => {
-          return <li key={`${lastName}/${firstName}`}>{lastName}, {firstName}</li>
-        })}
-      </ul>
+      <section>
+        <ul>
+          {this.props.students && this.props.students.map(({ firstName, lastName }) => {
+            return <li key={`${lastName}/${firstName}`}>{lastName}, {firstName}</li>
+          })}
+        </ul>
+        <Link to='/new'>Add</Link>
+      </section>
     )
   };
 };
