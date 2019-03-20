@@ -74,3 +74,33 @@ export const createStudent = async student => {
   }
   return { data: data.createStudent };
 };
+
+/**
+ * Fetches the data of given student, by its ID.
+ *
+ * @returns {Object} An object containing either "data" or "error" attribute.
+ * If defined, "data" should be an array of students data.
+ * If defined, "error" should be an array of GraphQLError.
+ */
+export const fetchStudent = async studentId => {
+  const { data, errors } = await client.query({
+    query: gql`
+      query Student($studentId: String!){
+        student(studentId: $studentId) {
+          firstName
+          lastName
+          birthDate
+          hobbies
+          photo
+        }
+      }
+    `,
+    variables: {
+      studentId
+    }
+  });
+  if (errors) {
+    return { error: errors };
+  }
+  return { data: data.student };
+};

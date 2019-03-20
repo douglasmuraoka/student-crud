@@ -27,6 +27,7 @@ const typeDefs = gql`
 
   type Query {
     students: [Student]
+    student(studentId: String!): Student
   }
 
   type Mutation {
@@ -44,6 +45,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     students: () => students,
+    student: (parent, args) => students.find(({ firstName, lastName }) => `${lastName}_${firstName}` === args.studentId)
   },
   Mutation: {
     createStudent: (parent, args) => {

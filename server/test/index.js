@@ -4,6 +4,18 @@ const gql = require('graphql-tag');
 
 const server = require('../index');
 
+const GET_STUDENT = gql`
+  query Student($studentId: String!){
+    student(studentId: $studentId) {
+      firstName
+      lastName
+      birthDate
+      hobbies
+      photo
+    }
+  }
+`;
+
 const GET_STUDENTS = gql`
   query {
     students {
@@ -59,6 +71,20 @@ describe('Student ApolloServer', () => {
     const testClient = createTestClient(server);
     query = testClient.query;
     mutate = testClient.mutate;
+  });
+
+  describe('get', () => {
+    it('should get a student by its ID', async () => {
+      const studentId = 'Muraoka_Douglas';
+      const res = await query({ query: GET_STUDENT, variables: { studentId } });
+      expect(res.data.student).to.deep.equal({
+        firstName: 'Douglas',
+        lastName: 'Muraoka',
+        birthDate: '06/21/1990',
+        hobbies: ['hiking', 'camping', 'gaming'],
+        photo: 'https://en.wikipedia.org/wiki/Foo_was_here#/media/File:Foo_was_here.jpg'
+      });
+    });
   });
 
   describe('list', () => {
