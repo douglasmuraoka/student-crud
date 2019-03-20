@@ -51,3 +51,14 @@ export const UPDATE_STUDENT = 'update_student';
  * could be either the updated student data, or an error.
  */
 export const UPDATE_STUDENT_DONE = 'update_student_done';
+
+/**
+ * Dispatched when the user deletes the student.
+ */
+export const DELETE_STUDENT = 'delete_student';
+
+/**
+ * Dispatched when the API finishes deleting the student. Its payload
+ * could be either the deleted student data, or an error.
+ */
+export const DELETE_STUDENT_DONE = 'delete_student_done';

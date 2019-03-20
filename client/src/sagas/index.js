@@ -4,8 +4,8 @@
 
 import { all, call, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import * as api from '../api';
-import { createStudentDoneAction, fetchStudentsDoneAction, fetchStudentDoneAction, updateStudentDoneAction } from '../actions';
-import { CREATE_STUDENT, FETCH_STUDENT, FETCH_STUDENTS, UPDATE_STUDENT } from '../actions/ActionType';
+import { createStudentDoneAction, fetchStudentsDoneAction, fetchStudentDoneAction, updateStudentDoneAction, deleteStudentDoneAction } from '../actions';
+import { CREATE_STUDENT, FETCH_STUDENT, FETCH_STUDENTS, UPDATE_STUDENT, DELETE_STUDENT } from '../actions/ActionType';
 
 /**
  * Watches for the latest FETCH_STUDENTS action dispatched and runs the fetchStudents saga.
@@ -93,6 +93,26 @@ export function* updateStudent({ payload: student }) {
   yield put(updateStudentDoneAction(res));
 };
 
+/**
+ * Watches for every DELETE_STUDENT action dispatched and runs the deleteStudent saga.
+ * The deleteStudent saga will be invoked with the action as its argument.
+ */
+export function* watchStudentDelete() {
+  return yield takeEvery(DELETE_STUDENT, deleteStudent)
+};
+
+/**
+ * Deletes the student, given the DELETE_STUDENT action payload
+ * as argument.
+ *
+ * @param {Object} action The DELETE_STUDENT action dispatched
+ * @param {Object} action.payload The student to be deleted
+ */
+export function* deleteStudent({ payload: student }) {
+  const res = yield call(api.deleteStudent, student);
+  yield put(deleteStudentDoneAction(res));
+};
+
 export default function* rootSaga() {
-  yield all([watchStudentsFetch, watchStudentCreate, watchStudentFetch, watchStudentUpdate].map(fork));
+  yield all([watchStudentsFetch, watchStudentCreate, watchStudentFetch, watchStudentUpdate, watchStudentDelete].map(fork));
 };

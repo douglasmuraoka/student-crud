@@ -8,7 +8,7 @@
  *   }
  */
 
-import { CREATE_STUDENT_DONE, FETCH_STUDENTS_DONE, UPDATE_STUDENT_DONE } from '../actions/ActionType';
+import { CREATE_STUDENT_DONE, FETCH_STUDENTS_DONE, UPDATE_STUDENT_DONE, DELETE_STUDENT_DONE } from '../actions/ActionType';
 
 export default (state = {}, { payload, type }) => {
   const { data, error } = payload || {};
@@ -41,6 +41,15 @@ export default (state = {}, { payload, type }) => {
             data
           ]
         }
+      }
+      return state;
+    case DELETE_STUDENT_DONE:
+      if (data) {
+        return {
+          data: [
+            ...state.data.filter(({ firstName, lastName }) => firstName !== data.firstName || lastName !== data.lastName)
+          ]
+        };
       }
       return state;
     default:

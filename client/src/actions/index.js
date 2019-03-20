@@ -14,7 +14,9 @@ import {
   FETCH_STUDENT,
   FETCH_STUDENT_DONE,
   UPDATE_STUDENT,
-  UPDATE_STUDENT_DONE
+  UPDATE_STUDENT_DONE,
+  DELETE_STUDENT,
+  DELETE_STUDENT_DONE
 } from './ActionType';
 
 /**
@@ -109,6 +111,32 @@ export const updateStudentAction = payload => {
 export const updateStudentDoneAction = payload => {
   return {
     type: UPDATE_STUDENT_DONE,
+    payload
+  };
+};
+
+/**
+ * Creates and returns a DELETE_STUDENT action.
+ *
+ * @param {String} payload.data.firstName
+ * @param {String} payload.data.lastName
+ */
+export const deleteStudentAction = payload => {
+  return {
+    type: DELETE_STUDENT,
+    payload
+  };
+};
+
+/**
+ * Creates and return a DELETE_STUDENT_DONE action.
+ *
+ * @param {Student} payload.data The deleted student data.
+ * @param {Error} payload.error Any errors thrown during the delete.
+ */
+export const deleteStudentDoneAction = payload => {
+  return {
+    type: DELETE_STUDENT_DONE,
     payload
   };
 };

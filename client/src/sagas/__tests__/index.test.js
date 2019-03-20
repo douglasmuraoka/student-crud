@@ -6,7 +6,15 @@ import { call } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan';
 import * as api from '../../api';
 import * as sagas from '..';
-import { createStudentAction, createStudentDoneAction, fetchStudentsDoneAction, updateStudentAction, updateStudentDoneAction } from '../../actions';
+import {
+  createStudentAction,
+  createStudentDoneAction,
+  fetchStudentsDoneAction,
+  updateStudentAction,
+  updateStudentDoneAction,
+  deleteStudentAction,
+  deleteStudentDoneAction
+} from '../../actions';
 
 describe('sagas', () => {
   describe('fetchStudents', () => {
@@ -46,6 +54,20 @@ describe('sagas', () => {
         ])
         .put(updateStudentDoneAction(mockedRes))
         .dispatch(updateStudentAction(mockedRes))
+        .run();
+    });
+  });
+
+  describe('watchStudentDelete', () => {
+    it('should watch for the DELETE_STUDENT action', () => {
+      const mockedRes = { foo: 'bar' };
+
+      expectSaga(sagas.watchStudentDelete)
+        .provide([
+          [call(api.deleteStudent), mockedRes]
+        ])
+        .put(deleteStudentDoneAction(mockedRes))
+        .dispatch(deleteStudentAction(mockedRes))
         .run();
     });
   });

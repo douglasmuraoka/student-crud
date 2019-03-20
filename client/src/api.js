@@ -138,3 +138,34 @@ export const updateStudent = async student => {
   }
   return { data: data.updateStudent };
 };
+
+/**
+ * Deletes the student and returns its data when finished with success.
+ *
+ * @param {String} student.firstName
+ * @param {String} student.lastName
+ *
+ * @returns {Object} An object containing either "data" or "error" attribute.
+ * If defined, "data" should be the deleted student data.
+ * If defined, "error" should be an array of GraphQLError.
+ */
+export const deleteStudent = async student => {
+  const { data, errors } = await client.mutate({
+    mutation: gql`
+      mutation DeleteStudent($firstName: String!, $lastName: String!) {
+        deleteStudent(firstName: $firstName, lastName: $lastName) {
+          firstName
+          lastName
+          birthDate
+          hobbies
+          photo
+        }
+      }
+    `,
+    variables: student
+  });
+  if (errors) {
+    return { error: errors };
+  }
+  return { data: data.deleteStudent };
+};

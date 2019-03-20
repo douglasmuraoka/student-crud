@@ -32,4 +32,36 @@ describe('StudentList', () => {
     expect(wrapped.find('li')).toHaveLength(2);
     expect(wrapped.find(Link)).toHaveLength(1);
   });
+
+  it('renders the edit button', () => {
+    const initialState = {
+      students: {
+        data: [
+          { firstName: 'Douglas', lastName: 'Muraoka' }
+        ]
+      }
+    };
+    wrapped = mount(<Root initialState={initialState}><BrowserRouter><StudentList /></BrowserRouter></Root>);
+    expect(wrapped.find('ul')).toHaveLength(1);
+    expect(wrapped.find('li')).toHaveLength(1);
+    wrapped.find('input').simulate('click');
+    expect(wrapped.find(Link)).toHaveLength(2);
+    expect(wrapped.find(Link).at(1).render().text()).toBe('Edit');
+  });
+
+  it('renders the delete button', () => {
+    const initialState = {
+      students: {
+        data: [
+          { firstName: 'Douglas', lastName: 'Muraoka' }
+        ]
+      }
+    };
+    wrapped = mount(<Root initialState={initialState}><BrowserRouter><StudentList /></BrowserRouter></Root>);
+    expect(wrapped.find('ul')).toHaveLength(1);
+    expect(wrapped.find('li')).toHaveLength(1);
+    wrapped.find('input').simulate('click');
+    expect(wrapped.find('button')).toHaveLength(1);
+    expect(wrapped.find('button').render().text()).toBe('Delete');
+  });
 });

@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { fetchStudentsAction } from '../actions';
+import { fetchStudentsAction, deleteStudentAction } from '../actions';
 
 class StudentList extends Component {
   state = {
@@ -30,13 +30,19 @@ class StudentList extends Component {
     });
   };
 
-  renderEditButton = () => {
+  renderEditAndDeleteButtons = () => {
     const selectedIds = Object.entries(this.state.selectedIds).filter(([, selected]) => selected);
     if (selectedIds.length !== 1) {
       return null;
     }
     const studentId = selectedIds[0][0]; // first entry, gets its entry key
-    return <Link to={`/${studentId}`}>Edit</Link>
+    const [lastName, firstName] = studentId.split('_');
+    return (
+      <>
+        <Link to={`/${studentId}`}>Edit</Link>
+        <button onClick={() => this.props.deleteStudentAction({ firstName, lastName })}>Delete</button>
+      </>
+    );
   };
 
   render() {
@@ -54,7 +60,7 @@ class StudentList extends Component {
           })}
         </ul>
         <Link to='/new'>Add</Link>
-        {this.renderEditButton()}
+        {this.renderEditAndDeleteButtons()}
       </section>
     )
   };
@@ -70,7 +76,7 @@ const mapStateToProps = ({ students }) => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { fetchStudentsAction },
+    { fetchStudentsAction, deleteStudentAction },
     dispatch
   );
 };
