@@ -38,4 +38,12 @@ describe('App', () => {
     expect(wrapped.find(Route)).toHaveLength(2);
     expect(wrapped.find(StudentForm)).toHaveLength(1);
   });
+
+  it('renders the StudentForm on path "/:studentId"', () => {
+    wrapped = getRoutedApp('/foo');
+    expect(wrapped.find(Root)).toHaveLength(1);
+    expect(wrapped.find(Switch)).toHaveLength(1);
+    expect(wrapped.find(Route)).toHaveLength(2);
+    expect(wrapped.find(StudentForm)).toHaveLength(1);
+  });
 });

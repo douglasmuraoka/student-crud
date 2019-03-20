@@ -6,9 +6,10 @@
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Form } from 'informed';
 import StudentFormField from './StudentFormField';
-import { createStudentAction, resetFormAction } from '../actions';
+import { createStudentAction, fetchStudentAction, resetFormAction, updateStudentAction } from '../actions';
 import { withRouter } from 'react-router-dom';
 
 const formValidation = {
@@ -40,22 +41,36 @@ const formValidation = {
   }
 };
 
-const studentForm = ({ isSaving, saveErrors, dispatch, history }) => {
+const studentForm = ({ isSaving, error, history, match, selectedStudent, createStudentAction, fetchStudentAction, resetFormAction, updateStudentAction }) => {
 
   useEffect(() => {
     // When the component is updated and is done saving and does not contains errors,
     // it should redirect the user to the students list.
-    if (isSaving === false && !saveErrors) {
+    if (isSaving === false && !error) {
       history.push('/');
-      return () => dispatch(resetFormAction());
+      return () => resetFormAction();
     }
-  }, [isSaving, saveErrors]); // Only runs this effect when isSaving or saveErrors has changed
+  }, [isSaving, error]); // Only runs this effect when isSaving or saveErrors has changed
 
-  const { firstName, lastName, birthDate, photo } = formValidation;
+  // Gets studentId from the route params, if matches
+  const { studentId } = match.params;
+  const isEdit = !!studentId;
+
+  // If is editing a student, but there is no selectedStudent yet, we must fetch it
+  if (isEdit) {
+    if (error) {
+      return <pre>An error occourred, please try again later</pre>;
+    }
+    if ((!selectedStudent || studentId !== `${selectedStudent.lastName}_${selectedStudent.firstName}`)) {
+      fetchStudentAction(studentId);
+      return <pre>Loading...</pre>;
+    }
+  }
   return (
-    <Form onSubmit={student => dispatch(createStudentAction(student))}>
+    <Form onSubmit={student => isEdit ? updateStudentAction(student) : createStudentAction(student)} initialValues={selectedStudent}>
       {({ formState }) => {
         const { errors, pristine } = formState;
+        const { firstName, lastName, birthDate, photo } = formValidation;
         return (
           <div>
             <StudentFormField field="firstName" label='First name' validation={firstName} error={errors && errors.firstName} />
@@ -64,7 +79,7 @@ const studentForm = ({ isSaving, saveErrors, dispatch, history }) => {
             <StudentFormField field="hobbies" label='Hobbies' type='multiple' placeholder='What are your hobbies? :)' />
             <StudentFormField field="photo" label='Photo URL' validation={photo} error={errors && errors.photo} />
 
-            {saveErrors && <pre>{saveErrors.join('\n')}</pre>}
+            {error && <pre>{error.join('\n')}</pre>}
 
             <button type="submit" disabled={pristine}>
               Submit
@@ -77,11 +92,19 @@ const studentForm = ({ isSaving, saveErrors, dispatch, history }) => {
 };
 
 const mapStateToProps = ({ form }) => {
-  const { isSaving, error } = form;
+  const { isSaving, error, selectedStudent } = form;
   return {
     isSaving,
-    saveErrors: error
+    error,
+    selectedStudent
   };
 };
 
-export default withRouter(connect(mapStateToProps)(studentForm));
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { createStudentAction, fetchStudentAction, resetFormAction, updateStudentAction },
+    dispatch
+  );
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(studentForm));

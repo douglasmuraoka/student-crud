@@ -1,5 +1,5 @@
 import reducer from '../form';
-import { CREATE_STUDENT_DONE, RESET_FORM } from '../../actions/ActionType';
+import { CREATE_STUDENT_DONE, FETCH_STUDENT_DONE, RESET_FORM } from '../../actions/ActionType';
 
 describe('Reducer: form', () => {
   it('should return an default state', () => {
@@ -37,6 +37,28 @@ describe('Reducer: form', () => {
       expect(state).toEqual({
         isSaving: undefined,
         error: undefined
+      });
+    });
+  });
+
+  describe('FETCH_STUDENT_DONE', () => {
+    it('should update the selectedStudent when the student has been fetched', () => {
+      const payload = {
+        data: { foo: 'bar' }
+      };
+      const state = reducer(undefined, { type: FETCH_STUDENT_DONE, payload });
+      expect(state).toEqual({
+        selectedStudent: payload.data
+      });
+    });
+
+    it('should return a state with the errors when the fetch has finished', () => {
+      const payload = {
+        error: [new Error('foo')]
+      };
+      const state = reducer(undefined, { type: FETCH_STUDENT_DONE, payload });
+      expect(state).toEqual({
+        error: payload.error
       });
     });
   });

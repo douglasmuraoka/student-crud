@@ -8,12 +8,12 @@
  *   }
  */
 
-import { CREATE_STUDENT_DONE, FETCH_STUDENTS } from '../actions/ActionType';
+import { CREATE_STUDENT_DONE, FETCH_STUDENTS_DONE, UPDATE_STUDENT_DONE } from '../actions/ActionType';
 
 export default (state = {}, { payload, type }) => {
   const { data, error } = payload || {};
   switch (type) {
-    case FETCH_STUDENTS:
+    case FETCH_STUDENTS_DONE:
       if (data) {
         return {
           ...state,
@@ -28,9 +28,19 @@ export default (state = {}, { payload, type }) => {
     case CREATE_STUDENT_DONE:
       if (data) {
         return {
-          data: [...state.data, data],
+          data: [...(state.data || []), data],
           error
         };
+      }
+      return state;
+    case UPDATE_STUDENT_DONE:
+      if (data) {
+        return {
+          data: [
+            ...state.data.filter(({ firstName, lastName }) => firstName !== data.firstName || lastName !== data.lastName),
+            data
+          ]
+        }
       }
       return state;
     default:

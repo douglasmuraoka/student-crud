@@ -18,6 +18,9 @@ export default () => (
       <Route path='/new' exact>
         <StudentForm />
       </Route>
+      <Route path='/:studentId' exact>
+        <StudentForm />
+      </Route>
     </Switch>
   </Root >
 );
