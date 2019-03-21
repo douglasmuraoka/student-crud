@@ -37,7 +37,7 @@ export default (state = {}, { payload, type }) => {
       if (data) {
         return {
           data: [
-            ...state.data.filter(({ firstName, lastName }) => firstName !== data.firstName || lastName !== data.lastName),
+            ...(state.data || []).filter(({ id }) => id !== data.id),
             data
           ]
         }
@@ -47,7 +47,7 @@ export default (state = {}, { payload, type }) => {
       if (data) {
         return {
           data: [
-            ...state.data.filter(({ firstName, lastName }) => firstName !== data.firstName || lastName !== data.lastName)
+            ...(state.data || []).filter(({ id }) => id !== data.id)
           ]
         };
       }

@@ -20,12 +20,12 @@ class StudentList extends Component {
     }
   }
 
-  toggleStudentSelected = studentId => {
+  toggleStudentSelected = id => {
     const { selectedIds } = this.state;
     this.setState({
       selectedIds: {
         ...selectedIds,
-        [studentId]: !selectedIds[studentId]
+        [id]: !selectedIds[id]
       }
     });
   };
@@ -35,12 +35,11 @@ class StudentList extends Component {
     if (selectedIds.length !== 1) {
       return null;
     }
-    const studentId = selectedIds[0][0]; // first entry, gets its entry key
-    const [lastName, firstName] = studentId.split('_');
+    const id = parseInt(selectedIds[0][0]); // first entry, gets its entry key
     return (
       <>
-        <Link to={`/${studentId}`}>Edit</Link>
-        <button onClick={() => this.props.deleteStudentAction({ firstName, lastName })}>Delete</button>
+        <Link to={`/student/${id}`}>Edit</Link>
+        <button onClick={() => this.props.deleteStudentAction(id)}>Delete</button>
       </>
     );
   };
@@ -49,17 +48,16 @@ class StudentList extends Component {
     return (
       <section>
         <ul>
-          {this.props.students && this.props.students.map(({ firstName, lastName }) => {
-            const studentId = `${lastName}_${firstName}`;
+          {this.props.students && this.props.students.map(({ id, firstName, lastName }) => {
             return (
-              <li key={studentId}>
-                <input type='checkbox' checked={this.state.selectedIds[studentId]} onClick={() => this.toggleStudentSelected(studentId)} />
+              <li key={id}>
+                <input type='checkbox' checked={this.state.selectedIds[id]} onClick={() => this.toggleStudentSelected(id)} />
                 {lastName}, {firstName}
               </li>
             );
           })}
         </ul>
-        <Link to='/new'>Add</Link>
+        <Link to='/student/new'>Add</Link>
         {this.renderEditAndDeleteButtons()}
       </section>
     )

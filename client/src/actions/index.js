@@ -118,8 +118,7 @@ export const updateStudentDoneAction = payload => {
 /**
  * Creates and returns a DELETE_STUDENT action.
  *
- * @param {String} payload.data.firstName
- * @param {String} payload.data.lastName
+ * @param {String} payload.data.id
  */
 export const deleteStudentAction = payload => {
   return {

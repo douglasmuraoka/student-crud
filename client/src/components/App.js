@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Root from './Root';
 import StudentList from './StudentList';
 import StudentForm from './StudentForm';
@@ -13,12 +13,15 @@ export default () => (
   <Root>
     <Switch>
       <Route path='/' exact>
+        <Redirect to='/student' />
+      </Route>
+      <Route path='/student' exact>
         <StudentList />
       </Route>
-      <Route path='/new' exact>
+      <Route path='/student/new' exact>
         <StudentForm />
       </Route>
-      <Route path='/:studentId' exact>
+      <Route path='/student/:studentId' exact>
         <StudentForm />
       </Route>
     </Switch>

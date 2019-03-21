@@ -26,6 +26,7 @@ export const fetchStudents = async () => {
     query: gql`
       query {
         students {
+          id
           firstName
           lastName
           birthDate
@@ -59,6 +60,7 @@ export const createStudent = async student => {
     mutation: gql`
     mutation CreateStudent($firstName: String!, $lastName: String!, $birthDate: String!, $hobbies: [String!], $photo: String!) {
       createStudent (firstName: $firstName, lastName: $lastName, birthDate: $birthDate, hobbies: $hobbies, photo: $photo) {
+        id
         firstName
         lastName
         birthDate
@@ -82,11 +84,12 @@ export const createStudent = async student => {
  * If defined, "data" should be an array of students data.
  * If defined, "error" should be an array of GraphQLError.
  */
-export const fetchStudent = async studentId => {
+export const fetchStudent = async id => {
   const { data, errors } = await client.query({
     query: gql`
-      query Student($studentId: String!){
-        student(studentId: $studentId) {
+      query Student($id: Int!){
+        student(id: $id) {
+          id
           firstName
           lastName
           birthDate
@@ -96,7 +99,7 @@ export const fetchStudent = async studentId => {
       }
     `,
     variables: {
-      studentId
+      id
     }
   });
   if (errors) {
@@ -108,6 +111,7 @@ export const fetchStudent = async studentId => {
 /**
  * Updates the student and returns its updated data when finished with success.
  *
+ * @param {Int} student.id
  * @param {String} student.firstName
  * @param {String} student.lastName
  * @param {String} student.birthDate
@@ -121,8 +125,9 @@ export const fetchStudent = async studentId => {
 export const updateStudent = async student => {
   const { data, errors } = await client.mutate({
     mutation: gql`
-    mutation UpdateStudent($firstName: String, $lastName: String, $birthDate: String, $hobbies: [String!], $photo: String) {
-      updateStudent (firstName: $firstName, lastName: $lastName, birthDate: $birthDate, hobbies: $hobbies, photo: $photo) {
+    mutation UpdateStudent($id: Int!, $firstName: String, $lastName: String, $birthDate: String, $hobbies: [String!], $photo: String) {
+      updateStudent (id: $id, firstName: $firstName, lastName: $lastName, birthDate: $birthDate, hobbies: $hobbies, photo: $photo) {
+        id
         firstName
         lastName
         birthDate
@@ -142,18 +147,18 @@ export const updateStudent = async student => {
 /**
  * Deletes the student and returns its data when finished with success.
  *
- * @param {String} student.firstName
- * @param {String} student.lastName
+ * @param {Int} id The student ID
  *
  * @returns {Object} An object containing either "data" or "error" attribute.
  * If defined, "data" should be the deleted student data.
  * If defined, "error" should be an array of GraphQLError.
  */
-export const deleteStudent = async student => {
+export const deleteStudent = async id => {
   const { data, errors } = await client.mutate({
     mutation: gql`
-      mutation DeleteStudent($firstName: String!, $lastName: String!) {
-        deleteStudent(firstName: $firstName, lastName: $lastName) {
+      mutation DeleteStudent($id: Int!) {
+        deleteStudent(id: $id) {
+          id
           firstName
           lastName
           birthDate
@@ -162,7 +167,9 @@ export const deleteStudent = async student => {
         }
       }
     `,
-    variables: student
+    variables: {
+      id
+    }
   });
   if (errors) {
     return { error: errors };

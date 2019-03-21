@@ -61,13 +61,17 @@ const studentForm = ({ isSaving, error, history, match, selectedStudent, createS
     if (error) {
       return <pre>An error occourred, please try again later</pre>;
     }
-    if ((!selectedStudent || studentId !== `${selectedStudent.lastName}_${selectedStudent.firstName}`)) {
-      fetchStudentAction(studentId);
+    if ((!selectedStudent || studentId !== selectedStudent.id.toString())) {
+      fetchStudentAction(parseInt(studentId));
       return <pre>Loading...</pre>;
     }
   }
   return (
-    <Form onSubmit={student => isEdit ? updateStudentAction(student) : createStudentAction(student)} initialValues={selectedStudent}>
+    <Form
+      initialValues={selectedStudent}
+      onSubmit={student => isEdit
+        ? updateStudentAction({ id: parseInt(studentId), ...student })
+        : createStudentAction({ id: parseInt(studentId), ...student })}>
       {({ formState }) => {
         const { errors, pristine } = formState;
         const { firstName, lastName, birthDate, photo } = formValidation;
