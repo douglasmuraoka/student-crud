@@ -28,3 +28,12 @@ services:
       - 4000:4000
     depends_on:
       - mysql
+  client:
+    build:
+      context: ./client
+    restart: always
+    volumes:
+      - /client/node_modules
+      - ./client:/client
+    ports:
+      - 3000:3000
