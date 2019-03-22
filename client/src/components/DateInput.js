@@ -8,6 +8,7 @@ import { asField } from 'informed';
 import Datepicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
+import styles from './DateInput.module.scss';
 
 const DATE_FORMAT = 'MM/dd/yyyy';
 
@@ -16,21 +17,23 @@ export default asField(({ fieldState, fieldApi, ...props }) => {
   const { setValue, setTouched } = fieldApi;
   const { forwardedRef, ...rest } = props;
   return (
-    <Datepicker
-      {...rest}
-      ref={forwardedRef}
-      value={value}
-      onChange={date => {
-        setValue(format(date, DATE_FORMAT));
-      }}
-      onBlur={() => {
-        setTouched();
-      }}
-      dateFormat={DATE_FORMAT}
-      strictParsing
-      showMonthDropdown
-      showYearDropdown
-      dropdownMode="select"
-    />
+    <div className={styles.container}>
+      <Datepicker
+        {...rest}
+        ref={forwardedRef}
+        value={value}
+        onChange={date => {
+          setValue(format(date, DATE_FORMAT));
+        }}
+        onBlur={() => {
+          setTouched();
+        }}
+        dateFormat={DATE_FORMAT}
+        strictParsing
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
+      />
+    </div>
   );
 });

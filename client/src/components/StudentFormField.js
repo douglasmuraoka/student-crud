@@ -9,6 +9,7 @@ import React from 'react';
 import { Text } from 'informed';
 import DateInput from './DateInput';
 import MultipleInput from './MultipleInput';
+import styles from './StudentFormField.module.scss';
 
 export default ({ field, label, validation, error, type = 'text', placeholder }) => {
   // Renders a different input component accordingly with its type
@@ -21,13 +22,18 @@ export default ({ field, label, validation, error, type = 'text', placeholder })
       inputComponent = <MultipleInput field={field} placeholder={placeholder} />
       break;
     default:
-      inputComponent = <Text field={field} validate={validation} />;
+      inputComponent = <Text className={styles.input} field={field} validate={validation} />;
       break;
   }
   return (
-    <label>
-      {label}: {inputComponent}
-      <div>{error}</div>
-    </label>
+    <div className={styles.field}>
+      <label>
+        {label}
+        {inputComponent}
+      </label>
+
+      {/* Error message, if any */}
+      {error && <div className={styles.error}>{error}</div>}
+    </div>
   );
 };

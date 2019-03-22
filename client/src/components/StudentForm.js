@@ -11,6 +11,8 @@ import { Form } from 'informed';
 import StudentFormField from './StudentFormField';
 import { createStudentAction, fetchStudentAction, resetFormAction, updateStudentAction } from '../actions';
 import { withRouter } from 'react-router-dom';
+import { Button, Col, Icon, Row } from 'react-materialize';
+import styles from './StudentForm.module.scss';
 
 const formValidation = {
   firstName: firstName => !firstName || firstName.length < 5 ? 'First name should contain at least 5 characters' : undefined,
@@ -67,31 +69,47 @@ const studentForm = ({ isSaving, error, history, match, selectedStudent, createS
     }
   }
   return (
-    <Form
-      initialValues={selectedStudent}
-      onSubmit={student => isEdit
-        ? updateStudentAction({ id: parseInt(studentId), ...student })
-        : createStudentAction({ id: parseInt(studentId), ...student })}>
-      {({ formState }) => {
-        const { errors, pristine } = formState;
-        const { firstName, lastName, birthDate, photo } = formValidation;
-        return (
-          <div>
-            <StudentFormField field="firstName" label='First name' validation={firstName} error={errors && errors.firstName} />
-            <StudentFormField field="lastName" label='Last name' validation={lastName} error={errors && errors.lastName} />
-            <StudentFormField field="birthDate" label='Birth date' type='date' validation={birthDate} error={errors && errors.birthDate} />
-            <StudentFormField field="hobbies" label='Hobbies' type='multiple' placeholder='What are your hobbies? :)' />
-            <StudentFormField field="photo" label='Photo URL' validation={photo} error={errors && errors.photo} />
+    <Row className={styles.container}>
+      <Col className={styles.formContainer} s={12} m={8} xl={6} offset='m2 xl3'>
+        <Form
+          className={styles.form}
+          initialValues={selectedStudent}
+          onSubmit={student => isEdit
+            ? updateStudentAction({ id: parseInt(studentId), ...student })
+            : createStudentAction({ id: parseInt(studentId), ...student })}>
+          {({ formState }) => {
+            const { errors, pristine } = formState;
+            const { firstName, lastName, birthDate, photo } = formValidation;
+            return (
+              <div>
+                <h4 className={styles.header}>{studentId ? 'Edit a student' : 'Create a student'}</h4>
+                <StudentFormField field="firstName" label='First name' validation={firstName} error={errors && errors.firstName} />
+                <StudentFormField field="lastName" label='Last name' validation={lastName} error={errors && errors.lastName} />
+                <StudentFormField field="birthDate" label='Birth date' type='date' validation={birthDate} error={errors && errors.birthDate} />
+                <StudentFormField field="hobbies" label='Hobbies' type='multiple' placeholder='What are your hobbies? :)' />
+                <StudentFormField field="photo" label='Photo URL' validation={photo} error={errors && errors.photo} />
 
-            {error && <pre>{error.join('\n')}</pre>}
+                {error && <pre>{error.join('\n')}</pre>}
 
-            <button type="submit" disabled={pristine}>
-              Submit
-            </button>
-          </div>
-        );
-      }}
-    </Form>
+                <div className={styles.toolbar}>
+                  {/* Cancel button */}
+                  <Button className='red' waves='light' onClick={() => history.push('/')}>
+                    Cancel
+                  <Icon left>cancel</Icon>
+                  </Button>
+
+                  {/* Save button */}
+                  <Button className='green' type="submit" disabled={pristine} waves='light'>
+                    Save
+                  <Icon left>check</Icon>
+                  </Button>
+                </div>
+              </div>
+            );
+          }}
+        </Form>
+      </Col>
+    </Row>
   );
 };
 

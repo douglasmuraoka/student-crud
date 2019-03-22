@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+
+  > div:first-child {
+    width: 100%;
+
+    > div {
+      width: 100%;
+
+      input:focus {
+        color: black;
+        border-bottom: 1px solid #208aec !important;
+        box-shadow: 0 1px 0 0 #208aec !important;
+      }
+    }
+  }
+}

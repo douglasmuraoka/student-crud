@@ -7,6 +7,7 @@
 import React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import { asField } from 'informed';
+import styles from './MultipleInput.module.scss';
 
 export default asField(({ fieldState, fieldApi, placeholder, ...props }) => {
   const { value } = fieldState;
@@ -23,7 +24,11 @@ export default asField(({ fieldState, fieldApi, placeholder, ...props }) => {
         setValue(selectedOptions.map(option => option.value));
       }}
       isMulti={true}
-      components={{ Menu: () => null }}
+      components={{
+        Menu: () => null,
+        IndicatorsContainer: () => null,
+        Input: ({ onChange }) => <input className={styles.input} onChange={onChange} />
+      }}
       placeholder={placeholder}
     />
   );

@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.formContainer {
+  height: 100%;
+}
+
+.header {
+  font-weight: 200;
+}
+
+.form {
+  border-radius: 5px;
+  box-shadow: 4px 4px 11px 2px rgba(0,0,0,.45);
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
