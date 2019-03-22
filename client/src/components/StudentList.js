@@ -41,10 +41,8 @@ class StudentList extends Component {
           {/* Students cards  */}
           {this.renderStudentsCards()}
 
-          {/* Floating toolbar */}
-          <section className={styles.toolbar}>
-            <Button floating large className={[styles.addStudentButton, 'green'].join(' ')} waves='light' icon='add' onClick={() => this.props.history.push('/student/new')} />
-          </section>
+          {/* Fixed "Add" button */}
+          <Button floating large className={[styles.addStudentButton, 'green'].join(' ')} waves='light' icon='add' onClick={() => this.props.history.push('/student/new')} />
         </Col>
       </Row>
     )

@@ -8,25 +8,14 @@
   flex-wrap: wrap;
 }
 
-.toolbar {
-  width: 100%;
-}
-
 .addStudentButton {
+  position: fixed;
+  top: calc(100% - 76px);
   left: calc(100% - 76px);
-
-  // medium size
-  @media screen and (min-width: 601px) {
-    left: calc(97.5% - 76px);
-  }
 
   // large size
   @media screen and (min-width: 993px) {
-    left: calc(92.5% - 76px);
-  }
-
-  // extra large size
-  @media screen and (min-width: 1201px) {
-    left: calc(87.5% - 76px);
+    left: calc(100% - 100px);
+    top: calc(100% - 100px);
   }
 }
