@@ -15,8 +15,8 @@ import { Button, Col, Icon, Row } from 'react-materialize';
 import styles from './StudentForm.module.scss';
 
 const formValidation = {
-  firstName: firstName => !firstName || firstName.length < 5 ? 'First name should contain at least 5 characters' : undefined,
-  lastName: lastName => !lastName || lastName.length < 5 ? 'Last name should contain at least 5 characters' : undefined,
+  firstName: firstName => !firstName || firstName.length < 4 ? 'First name should contain at least 4 characters' : undefined,
+  lastName: lastName => !lastName || lastName.length < 4 ? 'Last name should contain at least 4 characters' : undefined,
   birthDate: birthDate => {
     if (!birthDate) {
       return 'Birth date is required.';
