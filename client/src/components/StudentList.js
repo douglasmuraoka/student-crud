@@ -36,6 +36,10 @@ class StudentList extends Component {
   render() {
     return (
       <Row className={styles.componentContainer}>
+        <h1 className={styles.title}>Mesaic</h1>
+        <hr className={styles.titleSeparator} />
+        <h4 className={styles.subTitle}>students list</h4>
+
         <Col s={12} m={10} xl={8} offset='m1 xl2' className={styles.cardsContainer}>
 
           {/* Students cards  */}

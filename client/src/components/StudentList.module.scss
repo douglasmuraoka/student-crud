@@ -2,7 +2,24 @@
   margin-top: 20px;
 }
 
+.title {
+  text-align: center;
+  font-family: 'Kaushan Script', cursive;
+  margin-bottom: -5px;
+}
+
+.titleSeparator {
+  width: 200px;
+}
+
+.subTitle {
+  text-align: center;
+  font-family: 'Kaushan Script', cursive;
+  margin-top: -6px;
+}
+
 .cardsContainer {
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
