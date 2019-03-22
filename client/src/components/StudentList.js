@@ -2,64 +2,51 @@
  * @fileoverview Component responsible for rendering the student list.
  * The students data should be fetched by a saga and mapped as props through the Redux store.
  */
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { fetchStudentsAction, deleteStudentAction } from '../actions';
+import { Button, Col, Row } from 'react-materialize';
+import Card from './Card';
+import styles from './StudentList.module.scss';
 
 class StudentList extends Component {
-  state = {
-    selectedIds: {}
-  };
-
   componentDidMount() {
     if (!this.props.students) {
       this.props.fetchStudentsAction();
     }
   }
 
-  toggleStudentSelected = id => {
-    const { selectedIds } = this.state;
-    this.setState({
-      selectedIds: {
-        ...selectedIds,
-        [id]: !selectedIds[id]
-      }
-    });
-  };
-
-  renderEditAndDeleteButtons = () => {
-    const selectedIds = Object.entries(this.state.selectedIds).filter(([, selected]) => selected);
-    if (selectedIds.length !== 1) {
-      return null;
-    }
-    const id = parseInt(selectedIds[0][0]); // first entry, gets its entry key
-    return (
-      <>
-        <Link to={`/student/${id}`}>Edit</Link>
-        <button onClick={() => this.props.deleteStudentAction(id)}>Delete</button>
-      </>
-    );
-  };
+  renderStudentsCards = () => (
+    this.props.students && this.props.students.map(({ id, firstName, lastName, photo }) => {
+      return (
+        <Card
+          key={id}
+          avatar={photo}
+          avatarAlt={`${lastName}, ${firstName} avatar`}
+          onEdit={() => this.props.history.push(`/student/${id}`)}
+          onDelete={() => this.props.deleteStudentAction(id)}>
+          {lastName}, {firstName}
+        </Card>
+      );
+    })
+  )
 
   render() {
     return (
-      <section>
-        <ul>
-          {this.props.students && this.props.students.map(({ id, firstName, lastName }) => {
-            return (
-              <li key={id}>
-                <input type='checkbox' checked={this.state.selectedIds[id]} onClick={() => this.toggleStudentSelected(id)} />
-                {lastName}, {firstName}
-              </li>
-            );
-          })}
-        </ul>
-        <Link to='/student/new'>Add</Link>
-        {this.renderEditAndDeleteButtons()}
-      </section>
+      <Row className={styles.componentContainer}>
+        <Col s={12} m={10} xl={8} offset='m1 xl2' className={styles.cardsContainer}>
+
+          {/* Students cards  */}
+          {this.renderStudentsCards()}
+
+          {/* Floating toolbar */}
+          <section className={styles.toolbar}>
+            <Button floating large className={[styles.addStudentButton, 'green'].join(' ')} waves='light' icon='add' onClick={() => this.props.history.push('/student/new')} />
+          </section>
+        </Col>
+      </Row>
     )
   };
 };
@@ -79,4 +66,4 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StudentList));
