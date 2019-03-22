@@ -5,7 +5,6 @@
 import React from 'react';
 import { Icon } from 'react-materialize';
 import styles from './Card.module.scss';
-import defaultAvatar from '../default_avatar.svg';
 
 export default ({ children, avatar, avatarAlt, onEdit, onDelete }) => {
   return (
@@ -20,7 +19,7 @@ export default ({ children, avatar, avatarAlt, onEdit, onDelete }) => {
       {/* Header */}
       <header className={styles.cardHeader}>
         <div className={styles.avatarContainer}>
-          <img className={styles.avatar} alt={avatarAlt} src={avatar || defaultAvatar} />
+          <img className={styles.avatar} alt={avatarAlt} src={avatar} />
         </div>
       </header>
 
