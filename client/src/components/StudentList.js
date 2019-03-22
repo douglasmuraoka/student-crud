@@ -14,7 +14,7 @@ import styles from './StudentList.module.scss';
 
 class StudentList extends Component {
   state = {
-    openDialog: true,
+    openDialog: false,
     selectedStudentId: undefined
   }
 
@@ -25,7 +25,7 @@ class StudentList extends Component {
   }
 
   renderStudentsCards = () => (
-    this.props.students && this.props.students.map(({ id, firstName, lastName, photo }) => {
+    this.props.students && this.props.students.map(({ id, firstName, lastName, hobbies, photo }) => {
       return (
         <Card
           key={id}
@@ -33,7 +33,15 @@ class StudentList extends Component {
           avatarAlt={`${lastName}, ${firstName} avatar`}
           onEdit={() => this.props.history.push(`/student/${id}`)}
           onDelete={() => this.openDeleteDialog(id)}>
-          {lastName}, {firstName}
+          <div>
+            <p className={styles.studentName}>{lastName}, {firstName}</p>
+            <p className={styles.studentHobbiesTitle}>
+              HOBBIES
+            </p>
+            <p className={styles.studentHobbies}>
+              {hobbies && hobbies.join(', ')}
+            </p>
+          </div>
         </Card>
       );
     })

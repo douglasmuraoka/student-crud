@@ -25,6 +25,24 @@
   flex-wrap: wrap;
 }
 
+.studentName {
+  margin: 0;
+}
+
+.studentHobbiesTitle {
+  font-size: 0.7rem;
+  font-weight: 300;
+  margin: 0;
+  color: rgba(0,0,0,.6);
+}
+
+.studentHobbies {
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin: 0 0 20px;
+  text-transform: uppercase;
+}
+
 .addStudentButton {
   position: fixed;
   top: calc(100% - 76px);
