@@ -9,9 +9,15 @@ import { bindActionCreators } from 'redux';
 import { fetchStudentsAction, deleteStudentAction } from '../actions';
 import { Button, Col, Row } from 'react-materialize';
 import Card from './Card';
+import ConfirmDialog from './ConfirmDialog';
 import styles from './StudentList.module.scss';
 
 class StudentList extends Component {
+  state = {
+    openDialog: true,
+    selectedStudentId: undefined
+  }
+
   componentDidMount() {
     if (!this.props.students) {
       this.props.fetchStudentsAction();
@@ -26,29 +32,61 @@ class StudentList extends Component {
           avatar={photo}
           avatarAlt={`${lastName}, ${firstName} avatar`}
           onEdit={() => this.props.history.push(`/student/${id}`)}
-          onDelete={() => this.props.deleteStudentAction(id)}>
+          onDelete={() => this.openDeleteDialog(id)}>
           {lastName}, {firstName}
         </Card>
       );
     })
   )
 
+  openDeleteDialog = studentId => {
+    this.setState({
+      openDialog: true,
+      selectedStudentId: studentId
+    });
+  }
+
+  onCancelDeleteStudent = () => {
+    this.setState({
+      openDialog: false,
+      selectedStudentId: null
+    });
+  }
+
+  onConfirmDeleteStudent = () => {
+    this.props.deleteStudentAction(this.state.selectedStudentId);
+    this.setState({
+      openDialog: false,
+      selectedStudentId: null
+    });
+  }
+
   render() {
     return (
-      <Row className={styles.componentContainer}>
-        <h1 className={styles.title}>Mesaic</h1>
-        <hr className={styles.titleSeparator} />
-        <h4 className={styles.subTitle}>students list</h4>
+      <>
+        <Row className={styles.componentContainer}>
+          <h1 className={styles.title}>Mesaic</h1>
+          <hr className={styles.titleSeparator} />
+          <h4 className={styles.subTitle}>students list</h4>
 
-        <Col s={12} m={10} xl={8} offset='m1 xl2' className={styles.cardsContainer}>
+          <Col s={12} m={10} xl={8} offset='m1 xl2' className={styles.cardsContainer}>
 
-          {/* Students cards  */}
-          {this.renderStudentsCards()}
+            {/* Students cards  */}
+            {this.renderStudentsCards()}
 
-          {/* Fixed "Add" button */}
-          <Button floating large className={[styles.addStudentButton, 'green'].join(' ')} waves='light' icon='add' onClick={() => this.props.history.push('/student/new')} />
-        </Col>
-      </Row>
+            {/* Fixed "Add" button */}
+            <Button floating large className={[styles.addStudentButton, 'green'].join(' ')} waves='light' icon='add' onClick={() => this.props.history.push('/student/new')} />
+          </Col>
+        </Row>
+        <ConfirmDialog
+          open={this.state.openDialog}
+          title='Delete a student'
+          onCancel={this.onCancelDeleteStudent}
+          confirmLabel='Delete'
+          onConfirm={this.onConfirmDeleteStudent}>
+          Are you sure you want to delete a student?
+        </ConfirmDialog>
+      </>
     )
   };
 };
