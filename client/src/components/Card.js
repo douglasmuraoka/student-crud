@@ -1,12 +1,22 @@
+// @flow
+
 /**
  * @fileoverview Component responsible for rendering a card, with a header and a body for textual content.
  * Should also contain a toolbar, which allows users to both edit or delete.
  */
-import React from 'react';
+import * as React from 'react';
 import { Icon } from 'react-materialize';
 import styles from './Card.module.scss';
 
-export default ({ children, avatar, avatarAlt, onEdit, onDelete }) => {
+type Props = {
+  children: React.Element<any>,
+  avatar: string,
+  avatarAlt: string,
+  onEdit(): void,
+  onDelete(): void
+};
+
+export default ({ children, avatar, avatarAlt, onEdit, onDelete }: Props) => {
   return (
     <section className={styles.card}>
 

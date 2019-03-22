@@ -1,9 +1,11 @@
+// @flow
+
 /**
  * @fileoverview A modal dialog that can be closed by selecting one of the actions
  * or clicking outside the modal.
  */
 
-import React, { Component } from 'react';
+import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,13 +14,26 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
-class ConfirmDialog extends Component {
+type Props = {
+  children: React.Element<any>,
+  open: boolean,
+  title: string,
+  confirmLabel: string,
+  onCancel(): void,
+  onConfirm(): void
+};
+
+type State = {
+  open: boolean
+};
+
+class ConfirmDialog extends React.Component<Props, State> {
   state = {
     open: false,
   };
 
   render() {
-    const { children, open, title, onCancel, confirmLabel, onConfirm } = this.props;
+    const { children, open, title, onCancel, confirmLabel, onConfirm }: Props = this.props;
     return (
       <div>
         <Dialog
